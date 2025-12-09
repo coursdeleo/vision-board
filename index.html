@@ -445,7 +445,7 @@
     </div>
 
     <script>
-        const apiKey = ""; // La clé est gérée par l'environnement
+        const apiKey = "";
         
         // --- UI INTERACTIVITY ---
         
@@ -503,7 +503,12 @@
                     // Si c'est la dernière tentative, on renvoie l'erreur
                     if (i === delays.length) {
                         console.error("Erreur Gemini critique:", error);
-                        return "Le Néant brouille la communication... (Erreur API persistante)";
+                        // Affiche le message d'erreur spécifique à l'utilisateur pour le debug
+                        let errorMsg = "Le Néant brouille la communication... (Erreur API persistante)";
+                        if (error.message.includes("Erreur API")) {
+                            errorMsg += ` [Code: ${error.message.split(':')[1].trim()}]`;
+                        }
+                        return errorMsg;
                     }
                     // Sinon on attend avant de réessayer
                     await new Promise(resolve => setTimeout(resolve, delays[i]));
